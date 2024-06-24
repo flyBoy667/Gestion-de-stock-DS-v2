@@ -263,7 +263,6 @@ include('includes/header.php');
                                             // Stocker les informations de l'article
                                             articles[refProduit] = tab_info;
                                         }
-                                        console.log(articles);
                                         break;
 
                                     case 'creer_client':
@@ -276,21 +275,28 @@ include('includes/header.php');
                                             Swal.fire({
                                                 icon: 'error',
                                                 title: 'Erreur',
-                                                text: 'Le client existe déjà'
+                                                text: 'Le client existe déjà',
+
                                             });
-                                            return; // Arrête le script
+                                            return;
+                                        } else if (rep === "info") {
+                                            showAlert();
                                         } else {
+                                            var data = transport.responseText.split('|');
                                             var liste = document.getElementById("ref_client");
                                             var option = document.createElement("option");
-                                            option.value = rep;
-                                            option.text = rep;
+                                            console.log(rep)
+                                            option.value = data[0];
+                                            option.text = data[0] + " - " + data[1] + " " + data[2];
                                             liste.add(option);
                                             liste.selectedIndex = liste.length - 1;
+
                                             Swal.fire({
                                                 icon: 'success',
-                                                title: 'Succès',
-                                                text: 'Client créé avec succès'
+                                                title: 'Success',
+                                                text: 'Le client a ete ajoute',
                                             });
+
                                             document.getElementById("valider").disabled = false;
                                         }
                                         break;
@@ -303,14 +309,14 @@ include('includes/header.php');
                                                 title: 'Erreur',
                                                 text: 'Une erreur est survenue'
                                             });
-                                            return; // Arrête le script
+                                            return;
                                         } else if (reponse === "remise_error") {
                                             Swal.fire({
                                                 icon: 'error',
                                                 title: 'Erreur',
-                                                text: 'La remise payée est incorrecte'
+                                                text: 'La remise accordée est incorrecte'
                                             });
-                                            return; // Arrête le script
+                                            return;
                                         } else {
                                             let paye = document.getElementById("paye").value;
                                             let total_commande = document.getElementById("total_commande").value - document.getElementById("remise").value;
@@ -321,7 +327,7 @@ include('includes/header.php');
                                                     title: 'Erreur',
                                                     text: 'La Somme à payer est incorrecte'
                                                 });
-                                                return; // Arrête le script
+                                                return;
                                             }
 
                                             Swal.fire({
@@ -335,6 +341,7 @@ include('includes/header.php');
                                             document.querySelectorAll(".disabled_after_valid").forEach((element) => {
                                                 element.disabled = true;
                                             });
+                                            document.getElementById("valider").disabled = true;
                                         }
                                         break;
                                 }
@@ -472,6 +479,8 @@ include('includes/header.php');
                             <input type="text" id="total_com" name="total_com" style="visibility:hidden;"/>
                         </div>
                     </div>
+                    <input type="hidden" id="Adresse" name="Adresse">
+                    <input type="hidden" id="Tel" name="Tel">
                 </form>
 
                 <div class="div_saut_ligne" style="height:50px;">
@@ -528,6 +537,46 @@ include('includes/header.php');
             </div>
             <script language='javascript' type="text/javascript">
                 var tot_com = 0;
+
+                function showAlert() {
+                    Swal.fire({
+                        title: 'Ajouter les informations du client',
+                        html: `<input type="text" id="swal-input1" class="swal2-input" placeholder="Adresse" required>
+                       <input type="text" id="swal-input2" class="swal2-input" placeholder="Téléphone" required>`,
+                        showCancelButton: true,
+                        confirmButtonText: 'OK',
+                        cancelButtonText: 'Annuler',
+                        preConfirm: () => {
+                            const address = document.getElementById('swal-input1').value;
+                            const phone = document.getElementById('swal-input2').value;
+
+                            if (!address || !phone) {
+                                Swal.showValidationMessage('Tous les champs doivent être remplis');
+                                return false;
+                            }
+
+                            return {
+                                address: address,
+                                phone: phone
+                            };
+
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Récupérer les valeurs saisies dans l'alerte
+                            const address = result.value.address;
+                            const phone = result.value.phone;
+
+                            // Remplir les champs cachés du formulaire
+                            document.getElementById('Adresse').value = address;
+                            document.getElementById('Tel').value = phone;
+
+                            // Soumettre le formulaire
+                            document.getElementById('param').value = 'creer_client';
+                            recolter();
+                        }
+                    });
+                }
 
                 document.getElementById("formulaire").addEventListener("input", (ev) => {
                     if (document.getElementById("nom_client").value.length >= 2 && document.getElementById("prenom_client").value.length >= 2 && document.getElementById("civilite").value !== "0") {

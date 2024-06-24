@@ -2,6 +2,10 @@
 $liaison = mysqli_connect('127.0.0.1', 'fly', 'root');
 mysqli_select_db($liaison, 'stock_v3');
 
+if (!$liaison) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
 if (isset($_POST["param"])) {
     switch ($_POST["param"]) {
         case "recup_client":
@@ -21,19 +25,50 @@ if (isset($_POST["param"])) {
             break;
 
         case "creer_client":
-            $requete = "SELECT COUNT(IdClient) AS nb FROM clients WHERE Nom='" . $_POST["nom_client"] . "' AND Prenom='" . $_POST["prenom_client"] . "';";
+            // Verifie si le client est deja present dans la base de donnees
+            $nom_client = mysqli_real_escape_string($liaison, $_POST["nom_client"]);
+            $prenom_client = mysqli_real_escape_string($liaison, $_POST["prenom_client"]);
+            $civilite = mysqli_real_escape_string($liaison, $_POST["civilite"]);
+
+            $requete = "SELECT COUNT(IdClient) AS nb FROM clients WHERE Nom='$nom_client' AND Prenom='$prenom_client';";
             $retours = mysqli_query($liaison, $requete);
             $retour = mysqli_fetch_array($retours);
-            if ($retour["nb"] > 0)
+
+            if ($retour["nb"] > 0) {
                 print("nok");
-            else {
-                $requete = "INSERT INTO clients(Client_civilite, Nom, Prenom) VALUES ('" . $_POST["civilite"] . "', '" . $_POST["nom_client"] . "', '" . $_POST["prenom_client"] . "');";
+                return;
+            } elseif (empty($_POST["Tel"]) || empty($_POST["Adresse"])) {
+                //recuperation des informations supplementaires
+                print("info");
+                return;
+
+            } else {
+
+                $tel = mysqli_real_escape_string($liaison, $_POST["Tel"]);
+                $adresse = mysqli_real_escape_string($liaison, $_POST["Adresse"]);
+
+                $requete = "INSERT INTO clients(Client_civilite, Nom, Prenom, Tel, Adresse) VALUES ('$civilite', '$nom_client', '$prenom_client', '$tel', '$adresse')";
                 $retours = mysqli_query($liaison, $requete);
-                if ($retours == 1)
-                    print(mysqli_insert_id($liaison));
+                if ($retours == 1) {
+                    $last_id = mysqli_insert_id($liaison);
+
+                    // Récupérer les informations supplémentaires
+                    $query = "SELECT Nom, Prenom FROM clients WHERE IdClient = ?";
+                    $stmt = mysqli_prepare($liaison, $query);
+                    mysqli_stmt_bind_param($stmt, 'i', $last_id);
+                    mysqli_stmt_execute($stmt);
+                    mysqli_stmt_bind_result($stmt, $nom, $prenom);
+                    mysqli_stmt_fetch($stmt);
+
+                    $chaine = $last_id . "|" . $prenom . "|" . $nom;
+                    print($chaine);
+
+                    mysqli_stmt_close($stmt);
+                }
             }
             break;
-        case "facturer":
+        case
+        "facturer":
             if ($_POST["paye"] != 0) {
                 $requete = "SELECT Com_num FROM commandes ORDER BY Com_num DESC LIMIT 1;";
                 $retours = mysqli_query($liaison, $requete);
