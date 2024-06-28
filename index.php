@@ -1,223 +1,285 @@
-<?php
-$date = date("m"); // Mois actuel par défaut
-include('includes/db_connexion.php');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page de Connexion</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="dist/img/icon_stock.png"/>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            overflow: hidden;
+            perspective: 1000px;
+        }
 
-// Vérification et traitement du filtre par mois
-if (isset($_GET['month'])) {
-    $selected_month = $_GET['month'];
-} else {
-    $selected_month = $date; // Mois actuel par défaut
-}
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
 
-// Requête pour les ventes
-$query = "SELECT SUM(Detail_qte) AS qvente FROM detail WHERE type = 1 AND MONTH(date_commande) = :month";
-$statement = $connect->prepare($query);
-$statement->execute(array(':month' => $selected_month));
-$result = $statement->fetch(PDO::FETCH_OBJ);
-$qvendue = $result->qvente;
+        .circles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
 
-// Requête pour le montant des ventes
-$query2 = "SELECT SUM(montant_paye) AS mt FROM transaction WHERE type = 1 AND MONTH(transaction_date) = :month";
-$statement2 = $connect->prepare($query2);
-$statement2->execute(array(':month' => $selected_month));
-$result2 = $statement2->fetch(PDO::FETCH_OBJ);
-$sum = $result2->mt;
+        .circles li {
+            position: absolute;
+            list-style: none;
+            display: block;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.2);
+            animation: animate 25s linear infinite;
+            bottom: -150px;
+            border-radius: 50%;
+        }
 
-// Requête pour les achats
-$query_achat = "SELECT SUM(Detail_qte) AS qachat FROM detail WHERE type = 2 AND MONTH(date_commande) = :month";
-$statement_achat = $connect->prepare($query_achat);
-$statement_achat->execute(array(':month' => $selected_month));
-$result_achat = $statement_achat->fetch(PDO::FETCH_OBJ);
-$qacheter = $result_achat->qachat;
+        .circles li:nth-child(1) {
+            left: 25%;
+            width: 80px;
+            height: 80px;
+            animation-delay: 0s;
+        }
 
-// Requête pour le montant des achats
-$query_achat2 = "SELECT SUM(montant_paye) AS mt_achat FROM transaction WHERE type = 2 AND MONTH(transaction_date) = :month";
-$statement_achat2 = $connect->prepare($query_achat2);
-$statement_achat2->execute(array(':month' => $selected_month));
-$result_achat2 = $statement_achat2->fetch(PDO::FETCH_OBJ);
-$sum_achat = $result_achat2->mt_achat;
+        .circles li:nth-child(2) {
+            left: 10%;
+            width: 100px;
+            height: 100px;
+            animation-delay: 2s;
+            animation-duration: 12s;
+        }
 
-// Requête pour les dépenses
-$query_expenses = "SELECT SUM(montant) AS total_expenses FROM depense WHERE MONTH(depense_date) = :month";
-$statement_expenses = $connect->prepare($query_expenses);
-$statement_expenses->execute(array(':month' => $selected_month));
-$result_expenses = $statement_expenses->fetch(PDO::FETCH_OBJ);
-$total_expenses = $result_expenses->total_expenses;
+        .circles li:nth-child(3) {
+            left: 70%;
+            width: 120px;
+            height: 120px;
+            animation-delay: 4s;
+        }
 
-// Récupération des mois disponibles pour le filtre
-$query_months = "SELECT DISTINCT MONTH(date_commande) AS mois FROM detail";
-$statement_months = $connect->prepare($query_months);
-$statement_months->execute();
-$months = $statement_months->fetchAll(PDO::FETCH_COLUMN);
+        .circles li:nth-child(4) {
+            left: 40%;
+            width: 60px;
+            height: 60px;
+            animation-delay: 0s;
+            animation-duration: 18s;
+        }
 
-include('includes/header.php');
-?>
+        .circles li:nth-child(5) {
+            left: 65%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 0s;
+            animation-duration: 22s;
+        }
 
-<div class="row">
-    <div class="col-md-12">
-        <form action="" method="get" class="form-inline mb-3">
-            <label for="month" class="mr-2">Sélectionner un mois :</label>
-            <select name="month" id="month" class="form-control mr-2" onchange="this.form.submit()">
-                <?php foreach ($months as $month) : ?>
-                    <option value="<?php echo $month; ?>" <?php if ($month == $selected_month) echo 'selected'; ?>>
-                        <?php echo date("F", mktime(0, 0, 0, $month, 1)); ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-            <noscript><input type="submit" value="Appliquer" class="btn btn-primary"></noscript>
+        .circles li:nth-child(6) {
+            left: 75%;
+            width: 110px;
+            height: 110px;
+            animation-delay: 3s;
+        }
+
+        .circles li:nth-child(7) {
+            left: 35%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 7s;
+        }
+
+        .circles li:nth-child(8) {
+            left: 50%;
+            width: 25px;
+            height: 25px;
+            animation-delay: 15s;
+            animation-duration: 45s;
+        }
+
+        .circles li:nth-child(9) {
+            left: 20%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 2s;
+            animation-duration: 35s;
+        }
+
+        .circles li:nth-child(10) {
+            left: 85%;
+            width: 90px;
+            height: 90px;
+            animation-delay: 0s;
+            animation-duration: 11s;
+        }
+
+        @keyframes animate {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+                border-radius: 0;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+                border-radius: 50%;
+            }
+        }
+
+        .login-form {
+            width: 400px;
+            margin: 50px auto;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+
+        .login-form:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-form h2 {
+            margin: 0 0 15px;
+            text-align: center;
+            font-size: 24px;
+            color: #333;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .form-group .form-control {
+            height: 50px;
+            padding-left: 55px;
+            border-radius: 30px;
+            border: 1px solid #ddd;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .form-group .form-control:focus {
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+            border-color: #007bff;
+        }
+
+        .form-group i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 20px;
+        }
+
+        .btn {
+            border-radius: 30px;
+            padding: 12px;
+            font-size: 16px;
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: #fff;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #0056b3, #003f7f);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .forgot-password a {
+            color: #007bff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .forgot-password a:hover {
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <ul class="circles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    <div class="login-form">
+        <form action="login.php" method="post">
+            <h2>Connexion</h2>
+            <div class="form-group">
+                <i class="fa fa-user"></i>
+                <input type="text" class="form-control" name="username" placeholder="Nom d'utilisateur"
+                       required="required">
+            </div>
+            <div class="form-group">
+                <i class="fa fa-lock"></i>
+                <input type="password" class="form-control" name="password" placeholder="Mot de passe"
+                       required="required">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block">Se connecter</button>
+            </div>
+            <div class="forgot-password">
+                <a href="#">Mot de passe oublié?</a>
+            </div>
         </form>
-    </div>
+        <script>
 
-    <div class="col-12 col-sm-6 col-md-3">
-        <div class="info-box">
-            <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
-            <div class="info-box-content">
-                <span class="info-box-text">Total ventes (<?php echo date("F", mktime(0, 0, 0, $selected_month, 1)); ?>)</span>
-                <span class="info-box-number">
-                    <?php echo ($qvendue) ? $qvendue : 0; ?>
-                    <small>Produit(s)</small>
-                    <small><?php echo "(" . number_format($sum, 2, ',', ' ') . " CFA)"; ?></small>
-                </span>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-12 col-sm-6 col-md-3">
-        <div class="info-box mb-3">
-            <span class="info-box-icon bg-info elevation-1"><i class="fas fa-ship"></i></span>
-            <div class="info-box-content">
-                <span class="info-box-text">Total achats (<?php echo date("F", mktime(0, 0, 0, $selected_month, 1)); ?>)</span>
-                <span class="info-box-number">
-                    <?php echo ($qacheter) ? $qacheter : 0; ?>
-                    <small>Produit(s)</small>
-                    <small><?php echo "(" . number_format($sum_achat, 2, ',', ' ') . " CFA)"; ?></small>
-                </span>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-12 col-sm-6 col-md-3">
-        <div class="info-box mb-3">
-            <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-dollar-sign"></i></span>
-            <div class="info-box-content">
-                <span class="info-box-text">Total dépenses (<?php echo date("F", mktime(0, 0, 0, $selected_month, 1)); ?>)</span>
-                <span class="info-box-number">
-                    <?php echo ($total_expenses) ? number_format($total_expenses, 2, ',', ' ') : 0; ?> CFA
-                </span>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-12 col-sm-6 col-md-3">
-        <div class="info-box mb-3">
-            <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-money-bill-alt"></i></span>
-            <div class="info-box-content">
-                <span class="info-box-text">Total transactions (<?php echo date("F", mktime(0, 0, 0, $selected_month, 1)); ?>)</span>
-                <span class="info-box-number">
-                    <?php $total_transaction = $sum + $sum_achat; echo number_format($total_transaction, 2, ',', ' ') . " CFA"; ?>
-                </span>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-6">
-        <!-- BAR CHART -->
-        <div class="card card-success">
-            <div class="card-header">
-                <h3 class="card-title">Ventes VS Achats (Quantités)</h3>
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
-                </div>
-            </div>
-            <div class="card-body">
-                <canvas id="barChart" style="height:230px; min-height:230px"></canvas>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-6">
-        <!-- PIE CHART -->
-        <div class="card card-danger">
-            <div class="card-header">
-                <h3 class="card-title">Valeur du stock (Montants)</h3>
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
-                </div>
-            </div>
-            <div class="card-body">
-                <canvas id="pieChart" style="height:230px; min-height:230px"></canvas>
-            </div>
-        </div>
+        </script>
     </div>
 </div>
+<?php
+if ($_GET['error'] === "true") {
+    echo "<script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erreur',
+                    text: 'Nom d\\'utilisateur ou mot de passe incorrect',
+                    onClose: () => {
+                        window.location.href = 'index.php';
+                    }
+                });
+              </script>";
+}
+?>
 
-<?php include('includes/footer.php'); ?>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    // Données pour le graphique à barres (Ventes vs Achats)
-    var barData = {
-        labels: ['Ventes', 'Achats'],
-        datasets: [{
-            label: 'Quantités',
-            backgroundColor: ['#28a745', '#dc3545'],
-            data: [<?php echo $qvendue ? $qvendue : 0; ?>, <?php echo $qacheter ? $qacheter : 0; ?>]
-        }]
-    };
-
-    // Options pour le graphique à barres
-    var barOptions = {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: 'top',
-            },
-            title: {
-                display: true,
-                text: 'Quantités de ventes et d\'achats'
-            }
-        }
-    };
-
-    // Création du graphique à barres
-    var barChartCanvas = document.getElementById('barChart').getContext('2d');
-    var barChart = new Chart(barChartCanvas, {
-        type: 'bar',
-        data: barData,
-        options: barOptions
-    });
-
-    // Données pour le graphique circulaire (Valeur du stock)
-    var pieData = {
-        labels: ['Ventes', 'Achats'],
-        datasets: [{
-            label: 'Montants',
-            backgroundColor: ['#17a2b8', '#ffc107'],
-            data: [<?php echo $sum ? $sum : 0; ?>, <?php echo $sum_achat ? $sum_achat : 0; ?>]
-        }]
-    };
-
-    // Options pour le graphique circulaire
-    var pieOptions = {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: 'top',
-            },
-            title: {
-                display: true,
-                text: 'Montants de ventes et d\'achats'
-            }
-        }
-    };
-
-    // Création du graphique circulaire
-    var pieChartCanvas = document.getElementById('pieChart').getContext('2d');
-    var pieChart = new Chart(pieChartCanvas, {
-        type: 'pie',
-        data: pieData,
-        options: pieOptions
-    });
-</script>
+</body>
+</html>

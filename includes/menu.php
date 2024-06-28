@@ -3,7 +3,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
       <li class="nav-item">
-          <a href="./index.php" <?php if($link == "/stock_final/index.php") echo $active; else echo("class=nav-link");?>>
+          <a href="./dashboard.php" <?php if($link == "/stock_final/dashboard.php") echo $active; else echo("class=nav-link");?>>
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>Tableau de bord</p>
           </a>

@@ -117,10 +117,11 @@ if (isset($_POST["action"])) {
         echo json_encode($output);
     }
     if ($_POST["action"] == "update") {
+        $param_password = password_hash($_POST["password"], PASSWORD_DEFAULT); // Creates a password hash
         $query = "
 		UPDATE users 
 		SET username = '" . $_POST["login"] . "',
-		password = '" . $_POST["password"] . "',
+		password = '" . $param_password . "',
 		role = " . $_POST["role"] . ",
 		nom = '" . $_POST["nom"] . "', 
 		prenom = '" . $_POST["prenom"] . "',
