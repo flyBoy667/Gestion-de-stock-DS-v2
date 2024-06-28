@@ -228,6 +228,19 @@
     </style>
 </head>
 <body>
+<?php if (isset($_GET['error']) && $_GET['error'] === "true") : ?>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Erreur',
+            text: 'Nom d\'utilisateur ou mot de passe incorrect',
+            onClose: () => {
+                window.location.href = 'index.php';
+            }
+        });
+    </script>
+<?php endif; ?>
+
 <div class="container">
     <ul class="circles">
         <li></li>
@@ -266,20 +279,5 @@
         </script>
     </div>
 </div>
-<?php
-if ($_GET['error'] === "true") {
-    echo "<script>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Erreur',
-                    text: 'Nom d\\'utilisateur ou mot de passe incorrect',
-                    onClose: () => {
-                        window.location.href = 'index.php';
-                    }
-                });
-              </script>";
-}
-?>
-
 </body>
 </html>
