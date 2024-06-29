@@ -1,4 +1,5 @@
 <?php
+
 $date = date("m"); // Mois actuel par défaut
 include('includes/db_connexion.php');
 
@@ -51,6 +52,8 @@ $statement_months->execute();
 $months = $statement_months->fetchAll(PDO::FETCH_COLUMN);
 
 include('includes/header.php');
+checkAdmin();
+
 ?>
 
 <div class="row">
@@ -114,7 +117,8 @@ include('includes/header.php');
             <div class="info-box-content">
                 <span class="info-box-text">Total transactions (<?php echo date("F", mktime(0, 0, 0, $selected_month, 1)); ?>)</span>
                 <span class="info-box-number">
-                    <?php $total_transaction = $sum + $sum_achat; echo number_format($total_transaction, 2, ',', ' ') . " CFA"; ?>
+                    <?php $total_transaction = $sum + $sum_achat;
+                    echo number_format($total_transaction, 2, ',', ' ') . " CFA"; ?>
                 </span>
             </div>
         </div>
@@ -126,8 +130,10 @@ include('includes/header.php');
             <div class="card-header">
                 <h3 class="card-title">Ventes VS Achats (Quantités)</h3>
                 <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+                    </button>
                 </div>
             </div>
             <div class="card-body">
@@ -142,8 +148,10 @@ include('includes/header.php');
             <div class="card-header">
                 <h3 class="card-title">Valeur du stock (Montants)</h3>
                 <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+                    </button>
                 </div>
             </div>
             <div class="card-body">

@@ -2,6 +2,7 @@
 $liaison = mysqli_connect('127.0.0.1', 'fly', 'root');
 mysqli_select_db($liaison, 'stock_v3');
 include('includes/header.php');
+checkAdmin();
 ?>
     <style type="text/css">
         .titre_h1 {

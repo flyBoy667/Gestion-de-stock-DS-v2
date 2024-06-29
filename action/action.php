@@ -1,7 +1,7 @@
 <?php
 
 //Traitement des informations
-
+session_start();
 include('../includes/db_connexion.php');
 include('../includes/config.php');
 
@@ -45,18 +45,19 @@ if (isset($_POST["action"])) {
         // Validate password
         if (empty(trim($_POST["password"]))) {
             echo "Please enter a password.";
-        } elseif (strlen(trim($_POST["password"])) < 6) {
-            echo "Password must have atleast 6 characters.";
+            return;
         } else {
             $password = trim($_POST["password"]);
         }
         // Validate confirm password
         if (empty(trim($_POST["confirm_password"]))) {
             echo "Please confirm password.";
+            return;
         } else {
             $confirm_password = trim($_POST["confirm_password"]);
             if (empty($password_err) && ($password != $confirm_password)) {
                 echo "Password did not match.";
+                return;
             }
         }
 
@@ -64,11 +65,11 @@ if (isset($_POST["action"])) {
         if (empty($username_err) && empty($password_err) && empty($confirm_password_err)) {
 
             // Prepare an insert statement
-            $sql = "INSERT INTO users (username, password, role, nom, prenom, email) VALUES (?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO users (username, password, role, nom, prenom, email, ajouter_par) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
             if ($stmt = mysqli_prepare($link, $sql)) {
                 // Bind variables to the prepared statement as parameters
-                mysqli_stmt_bind_param($stmt, "ssssss", $param_username, $param_password, $role, $nom, $prenom, $email);
+                mysqli_stmt_bind_param($stmt, "sssssss", $param_username, $param_password, $role, $nom, $prenom, $email, $user_id);
 
                 // Set parameters
                 $param_username = $username;
@@ -77,6 +78,7 @@ if (isset($_POST["action"])) {
                 $nom = $_POST['nom'];
                 $prenom = $_POST['prenom'];
                 $email = $_POST['email'];
+                $user_id = $_SESSION['user_id'];
 
                 // Attempt to execute the prepared statement
                 if (mysqli_stmt_execute($stmt)) {
@@ -95,7 +97,7 @@ if (isset($_POST["action"])) {
         $query->bindValue(1,$_POST['nom']);
         $query->bindValue(2,$_POST['prenom']);
         $query->bindValue(3,$_POST['login']);
-        $query->bindValue(4,$_POST['role']);        
+        $query->bindValue(4,$_POST['role']);
         $query->execute();
         echo '<p>Donnée Inserer...</p>';*/
     }

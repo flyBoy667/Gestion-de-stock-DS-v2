@@ -10,6 +10,7 @@ $result_client = $client_statement->fetchAll();
 $total_client = $client_statement->rowCount();
 
 include('includes/header.php');
+checkAdmin();
 ?>
 <style type="text/css">
     .categorie-left {

@@ -10,6 +10,7 @@ $result_fournisseur = $fournisseur_statement->fetchAll();
 $total_fournisseur = $fournisseur_statement->rowCount();
 
 include('includes/header.php');
+checkAdmin();
 ?>
 
 <style type="text/css">

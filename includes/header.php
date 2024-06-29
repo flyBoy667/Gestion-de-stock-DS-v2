@@ -1,4 +1,16 @@
 <?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: index.php");
+    exit();
+}
+
+function checkAdmin() {
+    if (!isset($_SESSION['role']) || $_SESSION['role'] < 5) {
+        include("unauthorized.php");
+        exit();
+    }
+}
 $link = $_SERVER['REQUEST_URI'];
 
 $website_url = "/stock_final/";
@@ -111,7 +123,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <img src="dist/img/admin.jpg" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
-                    <a href="#" class="d-block">DIALLO Cheick</a>
+                    <a href="#" class="d-block"><?= $_SESSION['nom'] . ' ' . $_SESSION['prenom']  ?></a>
                 </div>
             </div>
             <!-- Sidebar Menu -->

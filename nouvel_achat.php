@@ -1,4 +1,6 @@
-<?php include('includes/header.php');?>
+<?php include('includes/header.php');
+checkAdmin();
+?>
 <!-- Select2 -->
 <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
 <!-- daterange picker -->

@@ -1,4 +1,5 @@
 <?php
+session_start();
 $liaison = mysqli_connect('127.0.0.1', 'fly', 'root');
 mysqli_select_db($liaison, 'stock_v3');
 
@@ -91,10 +92,19 @@ if (isset($_POST["param"])) {
                     return;
                 }
 
-                $requete = "INSERT INTO commandes(Com_client, Com_date, Com_montant, facture_number, Com_remise, montant_paye) VALUES (" . $com_client . ", '" . $com_date . "', " . $com_montant . ", '" . $facture_number . "'," . $remise . "," . $montant_paye . ");";
+                $requete = "INSERT INTO commandes(Com_client, Com_date, Com_montant, facture_number, Com_remise, montant_paye, Ajouter_pat) VALUES (" . $com_client . ", '" . $com_date . "', " . $com_montant . ", '" . $facture_number . "'," . $remise . "," . $montant_paye . ", " . $_SESSION['user_id'] . ");";
                 $retours = mysqli_query($liaison, $requete);
 
-                $transaction = "INSERT INTO transaction(num_facture, client_fournisseur, montant, remise, montant_paye, type, transaction_date) VALUES ('" . $facture_number . "'," . $com_client . ", " . $com_montant . ", " . $remise . ", " . $montant_paye . "," . $type . ", '" . $transaction_date . "');";
+                $transaction = "INSERT INTO transaction(num_facture, client_fournisseur, montant, remise, montant_paye, type, transaction_date, ajouter_par) VALUES ('"
+                    . $facture_number . "', "
+                    . $com_client . ", "
+                    . $com_montant . ", "
+                    . $remise . ", "
+                    . $montant_paye . ", "
+                    . $type . ", '"
+                    . $transaction_date . "', "
+                    . $_SESSION['user_id'] . ");";
+
                 $transa = mysqli_query($liaison, $transaction);
                 if ($retours == 1) {
                     $detail_com = mysqli_insert_id($liaison);

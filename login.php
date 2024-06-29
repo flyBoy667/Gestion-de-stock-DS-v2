@@ -18,11 +18,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['nom'] = $user['nom'];
         $_SESSION['prenom'] = $user['prenom'];
 
-        // Redirection vers une page protégée (à adapter selon votre projet)
-        header("Location: dashboard.php");
+        if ($user['role'] >= 5) {
+            header("Location: dashboard.php");
+        } else {
+            header("Location: vente.php");
+        }
         exit();
     } else {
-
         header("Location: index.php?error=true");
     }
 } else {

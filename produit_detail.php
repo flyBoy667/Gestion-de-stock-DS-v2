@@ -1,4 +1,5 @@
 <?php include ('includes/header.php');
+checkAdmin();
 
 $id = $_GET['id'];//echo $id;
 include('includes/db_connexion.php');

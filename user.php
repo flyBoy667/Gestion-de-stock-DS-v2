@@ -1,5 +1,6 @@
 <?php 
 include ('includes/header.php');
+checkAdmin();
 include('includes/db_connexion.php');
 $query ="SELECT * FROM system_group";
 $statement = $connect->prepare($query);

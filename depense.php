@@ -1,4 +1,6 @@
-<?php include('includes/header.php');?>
+<?php include('includes/header.php');
+checkAdmin();
+?>
 <style type="text/css">
   .categorie-left{
     width: 50%;
