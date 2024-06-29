@@ -228,19 +228,6 @@
     </style>
 </head>
 <body>
-<?php if (isset($_GET['error']) && $_GET['error'] === "true") : ?>
-    <script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Erreur',
-            text: 'Nom d\'utilisateur ou mot de passe incorrect',
-            onClose: () => {
-                window.location.href = 'index.php';
-            }
-        });
-    </script>
-<?php endif; ?>
-
 <div class="container">
     <ul class="circles">
         <li></li>
@@ -257,6 +244,14 @@
     <div class="login-form">
         <form action="login.php" method="post">
             <h2>Connexion</h2>
+            <?php if (isset($_GET['error']) && $_GET['error'] === "true") : ?>
+                <div class="alert alert-danger alert-dismiss pull-right">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    Veuillez vérifier votre nom d'utilisateur et votre mot de passe.
+                </div>
+            <?php endif; ?>
             <div class="form-group">
                 <i class="fa fa-user"></i>
                 <input type="text" class="form-control" name="username" placeholder="Nom d'utilisateur"
@@ -269,9 +264,6 @@
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-block">Se connecter</button>
-            </div>
-            <div class="forgot-password">
-                <a href="#">Mot de passe oublié?</a>
             </div>
         </form>
         <script>
