@@ -158,5 +158,15 @@
                 </a>
             </li>
         <?php endif; ?>
+        <?php if ($_SESSION['role'] >= 5) : ?>
+            <li class="nav-item">
+                <a href="./barCodeGenerator.php" <?php if ($link == "/stock_final/barCodeGenerator.php") echo $active; else echo("class=nav-link"); ?>>
+                    <i class="nav-icon fas fa-barcode"></i>
+                    <p>
+                        Codes barre
+                    </p>
+                </a>
+            </li>
+        <?php endif; ?>
     </ul>
 </nav>

@@ -68,6 +68,11 @@ if ($link == $website_url . "depense.php") {
 if ($link == $website_url . "rapport.php") {
     $active = 'class=\'nav-link active\'';
 }
+
+if ($link == $website_url . "barCodeGenerator.php") {
+    $active = 'class=\'nav-link active\'';
+}
+
 $url_en_cours = substr($link, strripos($link, "/") + 1);
 $url_en_cours = str_replace(".php", "", str_replace("-", " ", $url_en_cours));
 $url_en_cours = strtoupper(substr($url_en_cours, 0, 1)) . substr($url_en_cours, 1);

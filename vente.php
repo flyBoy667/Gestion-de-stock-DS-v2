@@ -481,6 +481,8 @@ include('includes/header.php');
                     </div>
                     <input type="hidden" id="Adresse" name="Adresse">
                     <input type="hidden" id="Tel" name="Tel">
+                    <input type="text" id="qr" name="qr">
+                    <input type="button" id="qr_btn" name="qr_btn">
                 </form>
 
                 <div class="div_saut_ligne" style="height:50px;">
@@ -537,6 +539,19 @@ include('includes/header.php');
             </div>
             <script language='javascript' type="text/javascript">
                 var tot_com = 0;
+                /*
+                * Generation du code barre
+                * id_produit devient la valeur du code barre
+                * un fichier pour la generation de code barre pour tous les produits
+                * */
+                // document.getElementById("qr").addEventListener('input', (e) => {
+                //     document.getElementById("ref_produit").value = e.currentTarget.value;
+                //     document.getElementById("param").value = "recup_article";
+                //     recolter();
+                // })
+                // document.getElementById("qr_btn").addEventListener('click', (e) => {
+                //     document.getElementById("qr").focus();
+                // })
 
                 function showAlert() {
                     Swal.fire({
@@ -594,9 +609,13 @@ include('includes/header.php');
                     var ref_p = ref_produit.value;
 
                     if (ref_client.value !== 0 && ref_p !== 0 && qte_commande.value !== "0" && qte_commande.value !== "") {
-                        if (parseInt(qte_commande.value) > parseInt(qte.value))
-                            alert("La quantité en stock n'est pas suffisante pour honorer la commande");
-                        else {
+                        if (parseInt(qte_commande.value) > parseInt(qte.value)) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Erreur',
+                                text: "La quantité en stock n'est pas suffisante pour honorer la commande"
+                            });
+                        } else {
                             // Utiliser les données du tableau articles
                             if (articles[ref_p]) {
                                 article = articles[ref_p];
