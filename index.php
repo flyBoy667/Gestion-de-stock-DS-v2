@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -245,12 +245,16 @@
         <form action="login.php" method="post">
             <h2>Connexion</h2>
             <?php if (isset($_GET['error']) && $_GET['error'] === "true") : ?>
-                <div class="alert alert-danger alert-dismiss pull-right">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    Veuillez vérifier votre nom d'utilisateur et votre mot de passe.
-                </div>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Erreur de connexion',
+                            text: 'Veuillez vérifier votre nom d\'utilisateur et votre mot de passe.',
+                            confirmButtonText: 'OK'
+                        });
+                    });
+                </script>
             <?php endif; ?>
             <div class="form-group">
                 <i class="fa fa-user"></i>
@@ -266,9 +270,6 @@
                 <button type="submit" class="btn btn-primary btn-block">Se connecter</button>
             </div>
         </form>
-        <script>
-
-        </script>
     </div>
 </div>
 </body>

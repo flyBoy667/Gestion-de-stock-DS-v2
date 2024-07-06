@@ -5,6 +5,27 @@ include('includes/header.php');
 checkAdmin();
 ?>
     <style type="text/css">
+        .table {
+            margin-top: 20px;
+        }
+
+        .table th, .table td {
+            vertical-align: middle;
+        }
+
+        .table thead {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .text-end {
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
         .titre_h1 {
             width: auto;
             display: block;
@@ -79,6 +100,26 @@ checkAdmin();
             text-align: center;
             padding-right: 10px;
         }
+
+        .btn-facture {
+            background-color: #28a745; /* Couleur de fond verte */
+            color: #fff; /* Couleur du texte blanche */
+            border: none; /* Pas de bordure */
+            padding: 8px 16px; /* Espacement interne */
+            font-size: 14px; /* Taille de police */
+            cursor: pointer; /* Curseur pointer au survol */
+            margin-right: 10px; /* Marge à droite */
+            margin-bottom: 10px; /* Marge en bas */
+        }
+
+        .btn-nouvelle-vente {
+            background-color: #007bff; /* Couleur de fond bleue */
+            color: #fff; /* Couleur du texte blanche */
+            border: none; /* Pas de bordure */
+            padding: 8px 16px; /* Espacement interne */
+            font-size: 14px; /* Taille de police */
+            cursor: pointer; /* Curseur pointer au survol */
+        }
     </style>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -100,19 +141,15 @@ checkAdmin();
     <!-- Bootstrap4 Duallistbox -->
     <link rel="stylesheet" href="plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
     <div class="col-12">
-        <!-- SELECT2 EXAMPLE -->
-        <div class="card card-default">
-            <div class="card-header">
-                <h3 class="card-title">Ajout nouvelle stock</h3>
-
+        <div class="card">
+            <div class="card-header text-center bg-primary text-white">
+                <h3>Ajout nouvelle stock</h3>
                 <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-remove"></i>
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
                     </button>
                 </div>
             </div>
-            <!-- /.card-header -->
             <div class="card-body">
                 <script src="js/prototype.js" type="text/javascript"></script>
                 <script language='javascript' type="text/javascript">
@@ -183,11 +220,14 @@ checkAdmin();
                                                     title: 'Success',
                                                     text: 'La facture a été validée'
                                                 });
-                                                document.getElementById("editer").innerHTML = "<input type='button' value='Voir la facture' onclick='window.open(\"ticket.php?id=" + reponse + "\")' />";
-                                                document.getElementById("actualiser").innerHTML = "<input type='button' value='Nouvel achat' onclick='window.location.reload();' />";
+                                                // Affichage des boutons stylisés et centrés après validation
+                                                document.getElementById("editer").innerHTML = "<div class='text-center'><input type='button' class='btn btn-facture mx-auto' value='Voir la facture' onclick='window.open(\"ticket.php?id=" + reponse + "\")' /></div>";
+                                                document.getElementById("actualiser").innerHTML = "<div class='text-center'><input type='button' class='btn btn-nouvelle-vente mx-auto' value='Nouvelle vente' onclick='window.location.reload();' /></div>";
+
                                                 document.querySelectorAll(".disabled_after_valid").forEach((element) => {
                                                     element.disabled = true;
                                                 });
+                                                document.getElementById("valider").disabled = true;
 
                                             }
                                         }
@@ -200,22 +240,13 @@ checkAdmin();
                     }
                 </script>
                 <form id="formulaire" name="formulaire" method="post" action="action/add_achat_fournisseur.php">
-                    <div class="titre_h1" style="height:350px;">
-                        <div style="width:10%;height:50px;float:left;"></div>
-                        <div style="width:35%;height:50px;float:left;font-size:20px;font-weight:bold;text-align:left;color:#a13638;">
-                            <u>Informations du fournisseur</u><br/>
-                        </div>
-                        <div style="width:10%;height:50px;float:left;"></div>
-                        <div style="width:35%;height:50px;float:left;font-size:16px;font-weight:bold;text-align:left;">
-                            <input type="button" id="creer_fournisseur" name="creer_fournisseur" disabled
-                                   value="Créer le fournisseur"
-                                   onclick="document.getElementById('param').value='creer_fournisseur';recolter();"/>
-                        </div>
-                        <div style="width:10%;height:50px;float:left;"></div>
-
-                        <div style="width:15%;height:55px;float:left;font-size:16px;font-weight:bold;text-align:left;">
-                            Réf. fournisseur :<br/>
-                            <select id="ref_fournisseur" name="ref_fournisseur"
+                    <div class="mb-4">
+                        <h4 class="text-secondary"><u>Informations du fournisseur</u></h4>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <label for="ref_fournisseur" class="font-weight-bold">Réf. fournisseur :</label>
+                            <select id="ref_fournisseur" name="ref_fournisseur" class="form-control"
                                     onchange="document.getElementById('param').value='recup_fournisseur';recolter();">
                                 <option value="0">Choisir fournisseur</option>
                                 <?php
@@ -227,32 +258,35 @@ checkAdmin();
                                 ?>
                             </select>
                         </div>
-                        <div style="width:10%;height:55px;float:left;font-size:16px;font-weight:bold;text-align:left;">
-                            Société :<br/>
-                            <input type="text" id="societe" name="societe"/>
+                        <div class="col-md-6">
+                            <label for="societe" class="font-weight-bold">Société :</label>
+                            <input type="text" id="societe" name="societe" class="form-control"/>
                         </div>
-
-                        <div style="width:10%;height:55px;float:left;"></div>
-                        <div style="width:6%;height:55px;float:left;"></div>
-                        <div style="width:25%;height:55px;float:left;font-size:16px;font-weight:bold;text-align:left;">
-                            Nom du fournisseur :<br/>
-                            <input type="text" id="nom_fournisseur" name="nom_fournisseur"/>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <label for="nom_fournisseur" class="font-weight-bold">Nom du fournisseur :</label>
+                            <input type="text" id="nom_fournisseur" name="nom_fournisseur" class="form-control"/>
                         </div>
-                        <div style="width:25%;height:55px;float:left;font-size:16px;font-weight:bold;text-align:left;">
-                            Prénom du fournisseur :<br/>
-                            <input type="text" id="prenom_fournisseur" name="prenom_fournisseur"/>
+                        <div class="col-md-6">
+                            <label for="prenom_fournisseur" class="font-weight-bold">Prénom du fournisseur :</label>
+                            <input type="text" id="prenom_fournisseur" name="prenom_fournisseur" class="form-control"/>
                         </div>
-
-
-                        <div style="width:10%;height:50px;float:left;"></div>
-                        <div style="width:80%;height:50px;float:left;font-size:20px;font-weight:bold;text-align:left;color:#a13638;">
-                            <u>Ajout des produits commandés</u><br/>
-                        </div>
-                        <div style="width:10%;height:50px;float:left;"></div>
-
-                        <div style="width:15%;height:55px;float:left;font-size:16px;font-weight:bold;text-align:left;">
-                            Réf. Produit :<br/>
-                            <select id="ref_produit" name="ref_produit"
+                    </div>
+                    <div class="text-center mb-4">
+                        <button type="button" id="creer_fournisseur" name="creer_fournisseur" class="btn btn-secondary"
+                                disabled
+                                onclick="document.getElementById('param').value='creer_fournisseur';recolter();">
+                            Créer le fournisseur
+                        </button>
+                    </div>
+                    <div class="mb-4">
+                        <h4 class="text-secondary"><u>Ajout des produits commandés</u></h4>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <label for="ref_produit" class="font-weight-bold">Réf. Produit :</label>
+                            <select id="ref_produit" name="ref_produit" class="form-control"
                                     onchange="document.getElementById('param').value='recup_article';recolter();">
                                 <option value="0">Réf. produit</option>
                                 <?php
@@ -264,184 +298,174 @@ checkAdmin();
                                 ?>
                             </select>
                         </div>
-                        <div style="width:15%;height:55px;float:left;font-size:16px;font-weight:bold;text-align:left;">
-                            Qté en stock :<br/>
-                            <input type="text" id="qte" name="qte" disabled style="text-align:right;"/>
-                        </div>
-                        <div style="width:10%;height:55px;float:left;"></div>
-                        <div style="width:25%;height:55px;float:left;font-size:16px;font-weight:bold;text-align:left;">
-                            Désignation du produit :<br/>
-                            <input type="text" id="designation" name="designation" disabled/>
-                        </div>
-                        <div style="width:25%;height:55px;float:left;font-size:16px;font-weight:bold;text-align:left;">
-                            Prix unitaire HT :<br/>
-                            <input type="text" id="puht" name="puht" disabled style="text-align:right;"/>
-                        </div>
-                        <div style="width:10%;height:55px;float:left;"></div>
-
-                        <div class="div_saut_ligne" style="height:2%;">
-                        </div>
-
-                        <div style="width:0;height:55px;float:left;"></div>
-                        <div style="width:10%;height:55px;float:left;font-size:16px;font-weight:bold;text-align:left;">
-                            Quantité:<br/>
-                            <input type="text" id="qte_commande" name="qte_commande"/>
-                        </div>
-                        <div style="width:7%;height:55px;float:left;"></div>
-                        <div style="width:20%;height:55px;float:left;font-size:16px;font-weight:bold;text-align:left;margin-top: -5px;">
-                            Total commande :<br/>
-                            <h4>
-                                <input type="text" id="total_commande" name="total_commande" disabled
-                                       style="color:#7f0c06;width:100%;font-family: Arial Black;"/>
-                            </h4>
-                        </div>
-                        <div style="width:3%;height:55px;float:left;"></div>
-                        <div style="width:15%;height:55px;float:left;font-size:16px;font-weight:bold;text-align:left;margin-top: -5px;">
-                            Remise :<br/>
-                            <input type="text" id="remise" name="remise" value="0" onchange="montan_a_payer();"/>
-                        </div>
-                        <div style="width:3%;height:55px;float:left;"></div>
-                        <div style="width:15%;height:55px;float:left;font-size:16px;font-weight:bold;text-align:left;margin-top: -5px;">
-                            Payé :<br/>
-                            <input type="text" id="paye" name="paye"/>
-                        </div>
-                        <div style="width:3%;height:55px;float:left;"></div>
-                        <div style="width:7%;height:55px;float:left;font-size:16px;font-weight:bold;text-align:left;padding-top: 10px;">
-                            <input type="button" id="ajouter" name="ajouter" class="disabled_after_valid" value="Ajouter" style="margin-top:10px;"
-                                   onclick="plus_com();"/><br/>
-                            <input type="text" id="param" name="param" style="visibility:hidden;"/>
-                        </div>
-                        <div style="width:15%;height:55px;float:left;font-size:16px;font-weight:bold;text-align:left;padding-top: 10px;">
-                            <input type="button" id="valider" name="valider" value="Valider" style="margin-top:10px;"
-                                   onclick="document.getElementById('param').value='facturer';recolter();"/><br/>
-                            <input type="text" id="chaine_com" name="chaine_com" style="visibility:hidden;"/>
-                            <input type="text" id="total_com" name="total_com" style="visibility:hidden;"/>
+                        <div class="col-md-6">
+                            <label for="qte" class="font-weight-bold">Qté en stock :</label>
+                            <input type="text" id="qte" name="qte" class="form-control" disabled/>
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <label for="designation" class="font-weight-bold">Désignation du produit :</label>
+                            <input type="text" id="designation" name="designation" class="form-control" disabled/>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="puht" class="font-weight-bold">Prix unitaire HT :</label>
+                            <input type="text" id="puht" name="puht" class="form-control" disabled/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            <label for="qte_commande" class="font-weight-bold">Quantité :</label>
+                            <input type="text" id="qte_commande" name="qte_commande" class="form-control"/>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="total_commande" class="font-weight-bold">Total commande :</label>
+                            <input type="text" id="total_commande" name="total_commande" class="form-control text-right"
+                                   disabled/>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="remise" class="font-weight-bold">Remise :</label>
+                            <input type="text" id="remise" name="remise" class="form-control" value="0"
+                                   onchange="montant_a_payer();"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            <label for="paye" class="font-weight-bold">Payé :</label>
+                            <input type="text" id="paye" name="paye" class="form-control"/>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <button type="button" id="ajouter" name="ajouter" class="btn btn-secondary mt-4"
+                                    onclick="plus_com();">
+                                Ajouter
+                            </button>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <button type="button" id="valider" name="valider" class="btn btn-primary mt-4"
+                                    onclick="document.getElementById('param').value='facturer';recolter();">
+                                Valider
+                            </button>
+                        </div>
+                    </div>
+                    <input type="hidden" id="param" name="param"/>
+                    <input type="hidden" id="chaine_com" name="chaine_com"/>
+                    <input type="hidden" id="total_com" name="total_com"/>
                 </form>
 
-                <div class="div_saut_ligne" style="height:50px;">
-                </div>
-
-                <div style="float:left;width:10%;height:25px;"></div>
-                <div style="float:left;width:80%;height:auto;text-align:center;">
-                    <div class="titre_h1" style="float:left;height:auto;width:100%;">
-                        <div style="float:left;width:5%;height:25px;"></div>
-                        <div style="width:15%;height:25px;float:left;font-size:16px;font-weight:bold;text-align:left;">
-                            Réference
-                        </div>
-                        <div style="width:15%;height:25px;float:left;font-size:16px;font-weight:bold;text-align:left;">
-                            Quantité
-                        </div>
-                        <div style="width:30%;height:25px;float:left;font-size:16px;font-weight:bold;text-align:left;overflow:hidden;">
-                            Désignation du produit
-                        </div>
-                        <div style="width:15%;height:25px;float:left;font-size:16px;font-weight:bold;text-align:right;">
-                            PUHT
-                        </div>
-                        <div style="width:15%;height:25px;float:left;font-size:16px;font-weight:bold;text-align:right;">
-                            PTHT
-                        </div>
-                        <div style="float:left;width:5%;height:25px;"></div>
-
-                        <div style="float:left;width:100%;height:auto;" id="det_com">
-                            <div class="bord"></div>
-                            <div class="suite">
-                            </div>
-                            <div class="suite">
-                            </div>
-                            <div class="des">
-                            </div>
-                            <div class="prix">
-                            </div>
-                            <div class="prix" style="font-weight:bold;">
-                            </div>
-                            <div class="bord"></div>
-
-                        </div>
-
-                        <div style="float:left;width: 5%;height:25px;"></div>
-                        <div style="float:left;width: 100%;height:auto; margin-bottom: 10px" id="editer"></div>
-                        <div style="float:left;width: 100%;height:auto;" id="actualiser"></div>
+                <!-- Tableau des commandes -->
+                <div class="mt-4">
+                    <div class="text-center mb-3">
+                        <h4>Récapitulatif des commandes</h4>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead class="text-white">
+                            <tr>
+                                <th scope="col">Référence</th>
+                                <th scope="col">Quantité</th>
+                                <th scope="col">Désignation du produit</th>
+                                <th scope="col" class="text-end">PUHT</th>
+                                <th scope="col" class="text-end">PTHT</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody id="det_com">
+                            <!-- Contenu dynamique -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-end mt-3">
+                        <div id="editer"></div>
+                        <div id="actualiser"></div>
                     </div>
                 </div>
-                <!-- /.row -->
             </div>
-            <script language='javascript' type="text/javascript">
-
-                var tot_com = 0;
-
-                document.getElementById("formulaire").addEventListener("input", (ev) => {
-                    if (document.getElementById("nom_fournisseur").value.length >= 2 && document.getElementById("prenom_fournisseur").value.length >= 2 && document.getElementById("societe").value.length >= 2) {
-                        document.getElementById("creer_fournisseur").disabled = false;
-                    } else {
-                        document.getElementById("creer_fournisseur").disabled = true;
-
-                    }
-
-                })
-
-                function plus_com() {
-                    if (ref_fournisseur.value != 0 && ref_produit.value != 0 && qte_commande.value != "0" && qte_commande.value != "") {
-                        //if(parseInt(qte_commande.value) > parseInt(qte.value))
-                        //	alert("La quantité en stock n'est pas suffisante pour honorer la commande");
-                        //else
-                        //{
-                        var ref_p = ref_produit.value;
-                        var qte_p = qte_commande.value;
-                        var des_p = designation.value;
-                        var pht_p = puht.value;
-
-                        tot_com = tot_com + qte_p * pht_p;
-                        total_commande.value = tot_com.toFixed(2);
-                        total_com.value = total_commande.value;
-                        chaine_com.value += "|" + ref_p + ";" + qte_p + ";" + des_p + ";" + pht_p;
-                        facture();
-                        //}
-                    }
-                }
-
-                function montan_a_payer() {
-                    //alert("test");
-                    document.getElementById('paye').value = document.getElementById('total_commande').value - document.getElementById('remise').value;
-                }
-
-
-                function facture() {
-
-                    var tab_com = chaine_com.value.split('|');
-                    var nb_lignes = tab_com.length;
-                    document.getElementById("det_com").innerHTML = "";
-                    for (ligne = 0; ligne < nb_lignes; ligne++) {
-                        if (tab_com[ligne] != "") {
-                            var ligne_com = tab_com[ligne].split(';');
-                            document.getElementById("det_com").innerHTML += "<div class='bord'></div>";
-                            document.getElementById("det_com").innerHTML += "<div class='suite'>" + ligne_com[0] + "</div>";
-                            document.getElementById("det_com").innerHTML += "<div class='suite'>" + ligne_com[1] + "</div>";
-                            document.getElementById("det_com").innerHTML += "<div class='des'>" + ligne_com[2] + "</div>";
-                            document.getElementById("det_com").innerHTML += "<div class='prix'>" + ligne_com[3] + "</div>";
-                            document.getElementById("det_com").innerHTML += "<div class='prix'>" + (ligne_com[1] * ligne_com[3]).toFixed(2) + "</div>";
-                            document.getElementById("det_com").innerHTML += "<div class='bord'><input type='button' value='X' title='Supprimer le produit' class='disabled_after_valid' style='height:20px;font-size:12px;' onclick='suppr(\"" + tab_com[ligne] + "\");' /></div>";
-                        }
-                    }
-                }
-
-                function suppr(ligne_s) {
-                    chaine_com.value = chaine_com.value.replace('|' + ligne_s, '');
-                    var tab_detail = ligne_s.split(';');
-
-                    total_commande.value = (total_commande.value - tab_detail[1] * tab_detail[3]).toFixed(2);
-                    total_com.value = total_commande.value;
-                    tot_com = total_com.value * 1;
-
-                    facture();
-                }
-
-            </script>
-            <!-- /.card-body -->
         </div>
-        <!-- /.card -->
     </div>
+    <script language='javascript' type="text/javascript">
+
+        var tot_com = 0;
+
+        document.getElementById("formulaire").addEventListener("input", (ev) => {
+            if (document.getElementById("nom_fournisseur").value.length >= 2 && document.getElementById("prenom_fournisseur").value.length >= 2 && document.getElementById("societe").value.length >= 2) {
+                document.getElementById("creer_fournisseur").disabled = false;
+            } else {
+                document.getElementById("creer_fournisseur").disabled = true;
+
+            }
+
+        })
+
+        function plus_com() {
+            if (ref_fournisseur.value != 0 && ref_produit.value != 0 && qte_commande.value != "0" && qte_commande.value != "") {
+                //if(parseInt(qte_commande.value) > parseInt(qte.value))
+                //	alert("La quantité en stock n'est pas suffisante pour honorer la commande");
+                //else
+                //{
+                var ref_p = ref_produit.value;
+                var qte_p = qte_commande.value;
+                var des_p = designation.value;
+                var pht_p = puht.value;
+
+                tot_com = tot_com + qte_p * pht_p;
+                total_commande.value = tot_com.toFixed(2);
+                total_com.value = total_commande.value;
+                chaine_com.value += "|" + ref_p + ";" + qte_p + ";" + des_p + ";" + pht_p;
+                facture();
+                //}
+            }
+        }
+
+        function montan_a_payer() {
+            //alert("test");
+            document.getElementById('paye').value = document.getElementById('total_commande').value - document.getElementById('remise').value;
+        }
+
+
+        function facture() {
+            var tab_com = chaine_com.value.split('|');
+            var tbody = document.getElementById("det_com");
+
+            tbody.innerHTML = ""; // Vide le contenu actuel du tableau
+
+            for (var i = 0; i < tab_com.length; i++) {
+                if (tab_com[i] !== "") {
+                    var ligne_com = tab_com[i].split(';');
+
+                    // Création d'une nouvelle ligne <tr>
+                    var tr = document.createElement("tr");
+
+                    // Ajout des cellules <td>
+                    tr.innerHTML = `
+                <td>${ligne_com[0]}</td>
+                <td>${ligne_com[1]}</td>
+                <td>${ligne_com[2]}</td>
+                <td class="text-end">${ligne_com[3]}</td>
+                <td class="text-end">${(ligne_com[1] * ligne_com[3]).toFixed(2)}</td>
+                <td class="action-column">
+                    <button class="btn btn-sm btn-danger" onclick="suppr('${tab_com[i]}')">Supprimer</button>
+                </td>
+            `;
+
+                    // Ajout de la ligne au tableau
+                    tbody.appendChild(tr);
+                }
+            }
+        }
+
+        function suppr(ligne_s) {
+            chaine_com.value = chaine_com.value.replace('|' + ligne_s, '');
+            var tab_detail = ligne_s.split(';');
+
+            total_commande.value = (total_commande.value - tab_detail[1] * tab_detail[3]).toFixed(2);
+            total_com.value = total_commande.value;
+            tot_com = total_com.value * 1;
+
+            facture();
+        }
+
+    </script>
+
 
     <!-- jQuery -->
     <!

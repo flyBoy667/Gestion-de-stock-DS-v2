@@ -38,7 +38,7 @@ if (isset($_POST["param"])) {
             if ($retour["nb"] > 0) {
                 print("nok");
                 return;
-            } elseif (empty($_POST["Tel"]) || empty($_POST["Adresse"])) {
+            } elseif (empty($_POST["Tel"]) || empty($_POST["Adresse"]) || empty($prenom_client) || empty($nom_client) || empty($civilite)) {
                 //recuperation des informations supplementaires
                 print("info");
                 return;
