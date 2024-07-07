@@ -2,14 +2,15 @@
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Add icons to the links using the .nav-icon class
              with font-awesome or any other icon font library -->
+
+        <li class="nav-item">
+            <a href="./dashboard.php" <?php if ($link == "/stock_final/dashboard.php") echo $active; else echo("class=nav-link"); ?>>
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>Tableau de bord</p>
+            </a>
+        </li>
         <?php if ($_SESSION['role'] >= 5) : ?>
 
-            <li class="nav-item">
-                <a href="./dashboard.php" <?php if ($link == "/stock_final/dashboard.php") echo $active; else echo("class=nav-link"); ?>>
-                    <i class="nav-icon fas fa-tachometer-alt"></i>
-                    <p>Tableau de bord</p>
-                </a>
-            </li>
             <li <?php if ($link == "/stock_final/user.php" or $link == "/stock_final/reglages.php") echo $menu; else echo("class=nav-item has-treeview"); ?>>
                 <a href="#" <?php if ($link == "/stock_final/user.php" or $link == "/stock_final/reglages.php") echo $active; else echo("class=nav-link"); ?>>
                     <i class="nav-icon fas fa-cog"></i>

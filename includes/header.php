@@ -101,6 +101,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- Icon dans le navigateur-->
     <link rel="icon" type="image/png" href="dist/img/icon_stock.png"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
     <!-- Google Font: Source Sans Pro -->
     <!--<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">-->
 </head>
