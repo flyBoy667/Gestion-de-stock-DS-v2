@@ -308,10 +308,10 @@ include('includes/header.php');
                                             });
                                             return;
                                         } else {
-                                            let paye = document.getElementById("paye").value;
-                                            let total_commande = document.getElementById("total_commande").value - document.getElementById("remise").value;
+                                            // let paye = document.getElementById("paye").value;
+                                            // let total_commande = document.getElementById("total_commande").value - document.getElementById("remise").value;
 
-                                            if (paye === "" || paye < total_commande || paye > total_commande || paye < document.getElementById("remise").value) {
+                                            if (reponse === "somme_error") {
                                                 Swal.fire({
                                                     icon: 'error',
                                                     title: 'Erreur',
@@ -319,6 +319,14 @@ include('includes/header.php');
                                                 });
                                                 return;
                                             }
+
+                                            // if (paye < total_commande){
+                                            //     Swal.fire({
+                                            //         icon: 'success',
+                                            //         title: 'Succès',
+                                            //         text: 'La facture a été validée'
+                                            //     });
+                                            // }
 
                                             Swal.fire({
                                                 icon: 'success',
@@ -623,7 +631,7 @@ include('includes/header.php');
                 <td class="text-end">${ligne_com[3]}</td>
                 <td class="text-end">${(ligne_com[1] * ligne_com[3]).toFixed(2)}</td>
                 <td class="action-column">
-                    <button class="btn btn-sm btn-danger" onclick="suppr('${tab_com[i]}')">Supprimer</button>
+                    <button class="btn btn-sm btn-danger disabled_after_valid" onclick="suppr('${tab_com[i]}')">Supprimer</button>
                 </td>
             `;
 

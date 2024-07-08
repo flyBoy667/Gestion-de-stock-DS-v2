@@ -168,6 +168,30 @@
                     </p>
                 </a>
             </li>
+            <li <?php if ($link == "/stock_final/achats_incomplets.php" or $link == "/stock_final/ventes_incompletes.php") echo $menu; else echo("class=nav-item has-treeview"); ?>>
+                <a href="#" <?php if ($link == "/stock_final/achats_incomplets.php" or $link == "/stock_final/ventes_incompletes.php") echo $active; else echo("class=nav-link"); ?>>
+                    <i class="nav-icon fas fa-exclamation-circle"></i>
+                    <p>
+                        Paiements incomplets
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="./achats_incomplets.php" <?php if ($link == "/stock_final/achats_incomplets.php") echo $active; else echo("class=nav-link"); ?>>
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Achats incomplets</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="./ventes_incompletes.php" <?php if ($link == "/stock_final/ventes_incompletes.php") echo $active; else echo("class=nav-link"); ?>>
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Ventes incompletes</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
         <?php endif; ?>
     </ul>
 </nav>

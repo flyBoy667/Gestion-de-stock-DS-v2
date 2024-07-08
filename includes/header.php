@@ -5,12 +5,14 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-function checkAdmin() {
+function checkAdmin()
+{
     if (!isset($_SESSION['role']) || $_SESSION['role'] < 5) {
         include("unauthorized.php");
         exit();
     }
 }
+
 $link = $_SERVER['REQUEST_URI'];
 
 $website_url = "/stock_final/";
@@ -73,6 +75,17 @@ if ($link == $website_url . "barCodeGenerator.php") {
     $active = 'class=\'nav-link active\'';
 }
 
+if ($link == $website_url . "ventes_incompletes.php" || $link == $website_url . "achats_incomplets.php") {
+    $menu = 'class=\'nav-item has-treeview menu-open\'';
+}
+
+if ($link == $website_url . "ventes_incompletes.php") {
+    $active = 'class=\'nav-link active\'';
+}
+if ($link == $website_url . "achats_incomplets.php") {
+    $active = 'class=\'nav-link active\'';
+}
+
 $url_en_cours = substr($link, strripos($link, "/") + 1);
 $url_en_cours = str_replace(".php", "", str_replace("-", " ", $url_en_cours));
 $url_en_cours = strtoupper(substr($url_en_cours, 0, 1)) . substr($url_en_cours, 1);
@@ -129,7 +142,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <img src="dist/img/user.png" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
-                    <a href="#" class="d-block"><?= $_SESSION['nom'] . ' ' . $_SESSION['prenom']  ?></a>
+                    <a href="#" class="d-block"><?= $_SESSION['nom'] . ' ' . $_SESSION['prenom'] ?></a>
                 </div>
             </div>
             <!-- Sidebar Menu -->

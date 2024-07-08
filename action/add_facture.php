@@ -83,19 +83,30 @@ if (isset($_POST["param"])) {
                 $remise = $_POST["remise"];
                 $facture_number = $com_date . "/S-00" . $derniere_com;
                 $type = 1;
-
+                // les restes de la commandes
+                $restant = 0;
                 $texte_com = $_POST["chaine_com"];
                 $tab_com = explode('|', $texte_com);
-
-                if ($remise > $montant_paye) {
+                //Appliquation de la remise
+                if ($remise > $com_montant) {
                     print("remise_error");
+                    return;
+                }
+                $com_montant = $com_montant - $remise;
+
+                if ($com_montant > $montant_paye) {
+                    $restant = $com_montant - $montant_paye;
+                }
+
+                if ($montant_paye === "" || $montant_paye > $com_montant) {
+                    print("somme_error");
                     return;
                 }
 
                 $requete = "INSERT INTO commandes(Com_client, Com_date, Com_montant, facture_number, Com_remise, montant_paye, Ajouter_pat) VALUES (" . $com_client . ", '" . $com_date . "', " . $com_montant . ", '" . $facture_number . "'," . $remise . "," . $montant_paye . ", " . $_SESSION['user_id'] . ");";
                 $retours = mysqli_query($liaison, $requete);
 
-                $transaction = "INSERT INTO transaction(num_facture, client_fournisseur, montant, remise, montant_paye, type, transaction_date, ajouter_par) VALUES ('"
+                $transaction = "INSERT INTO transaction(num_facture, client_fournisseur, montant, remise, montant_paye, type, transaction_date, restant, ajouter_par) VALUES ('"
                     . $facture_number . "', "
                     . $com_client . ", "
                     . $com_montant . ", "
@@ -103,6 +114,7 @@ if (isset($_POST["param"])) {
                     . $montant_paye . ", "
                     . $type . ", '"
                     . $transaction_date . "', "
+                    . $restant . ", "
                     . $_SESSION['user_id'] . ");";
 
                 $transa = mysqli_query($liaison, $transaction);

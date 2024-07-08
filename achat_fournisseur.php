@@ -335,7 +335,7 @@ checkAdmin();
                             <input type="text" id="paye" name="paye" class="form-control"/>
                         </div>
                         <div class="col-md-4 text-center">
-                            <button type="button" id="ajouter" name="ajouter" class="btn btn-secondary mt-4"
+                            <button type="button" id="ajouter" name="ajouter" class="btn btn-secondary mt-4 disabled_after_valid"
                                     onclick="plus_com();">
                                 Ajouter
                             </button>
@@ -443,7 +443,7 @@ checkAdmin();
                 <td class="text-end">${ligne_com[3]}</td>
                 <td class="text-end">${(ligne_com[1] * ligne_com[3]).toFixed(2)}</td>
                 <td class="action-column">
-                    <button class="btn btn-sm btn-danger" onclick="suppr('${tab_com[i]}')">Supprimer</button>
+                    <button class="btn btn-sm btn-danger disabled_after_valid" onclick="suppr('${tab_com[i]}')">Supprimer</button>
                 </td>
             `;
 
