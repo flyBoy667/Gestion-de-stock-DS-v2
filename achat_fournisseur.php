@@ -208,13 +208,21 @@ checkAdmin();
                                             });
                                             return; // Arrête le script
                                         } else {
-                                            if (document.getElementById("paye").value == "" || (document.getElementById("paye").value < (document.getElementById("total_commande").value - document.getElementById("remise").value)) || (document.getElementById("paye").value > (document.getElementById("total_commande").value - document.getElementById("remise").value))) {
+                                            // if (document.getElementById("paye").value == "" || (document.getElementById("paye").value < (document.getElementById("total_commande").value - document.getElementById("remise").value)) || (document.getElementById("paye").value > (document.getElementById("total_commande").value - document.getElementById("remise").value))) {
+                                            //     Swal.fire({
+                                            //         icon: 'error',
+                                            //         title: 'Erreur',
+                                            //         text: 'La Somme a payé incorrect'
+                                            //     });
+                                            if (reponse === "somme_error") {
                                                 Swal.fire({
                                                     icon: 'error',
                                                     title: 'Erreur',
-                                                    text: 'La Somme a payé incorrect'
+                                                    text: 'La Somme à payer est incorrecte'
                                                 });
-                                            } else {
+                                                return;
+                                            }
+                                            {
                                                 Swal.fire({
                                                     icon: 'success',
                                                     title: 'Success',
@@ -335,7 +343,8 @@ checkAdmin();
                             <input type="text" id="paye" name="paye" class="form-control"/>
                         </div>
                         <div class="col-md-4 text-center">
-                            <button type="button" id="ajouter" name="ajouter" class="btn btn-secondary mt-4 disabled_after_valid"
+                            <button type="button" id="ajouter" name="ajouter"
+                                    class="btn btn-secondary mt-4 disabled_after_valid"
                                     onclick="plus_com();">
                                 Ajouter
                             </button>

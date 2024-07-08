@@ -100,12 +100,12 @@ if (count($final_result) > 0) {
             <td>' . number_format($row["montant"], 2, ',', ' ') . " CFA" . '</td>
             <td>' . number_format($row["montant_paye"], 2, ',', ' ') . " CFA" . '</td>
             <td>' . $row["ajoute_par_prenom"] . " " . $row["ajoute_par_nom"] . '</td>
-            <td>' . $row["restant"] . '</td>
+            <td>' . number_format($row["restant"], 2, ',', ' ') . " CFA" . '</td>
             <td>
                 <a type="button" name="detail" class="btn btn-primary btn-xs detail" href="detail_facture.php?id=' . $row["num_facture"] . '"><i class="nav-icon fas fa-eye" aria-hidden="true"> Detail</i></a>
                 <a type="button" name="ticket" class="btn btn-primary btn-xs detail" href="ticket.php?id=' . $row["num_facture"] . '""><i class="nav-icon fas fa-file" aria-hidden="true"> Facture</i></a>';
         if ($_SESSION["role"] >= 5) {
-            $output .= ' <button type="button" name="delete" class="btn btn-primary btn-xs update" id="' . $row["id_transaction"] . '"><i class="nav-icon fas fa-sync">Mettre à jour</i></button>';
+            $output .= ' <button type="button" name="update" class="btn btn-primary btn-xs update" id="' . $row["id_transaction"] . '"><i class="nav-icon fas fa-sync">Mettre à jour</i></button>';
             $output .= ' <button type="button" name="delete" class="btn btn-danger btn-xs delete" id="' . $row["id_transaction"] . '"><i class="nav-icon fas fa-trash"> Supprimer</i></button>';
         }
         $output .= '

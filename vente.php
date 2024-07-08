@@ -308,8 +308,8 @@ include('includes/header.php');
                                             });
                                             return;
                                         } else {
-                                            // let paye = document.getElementById("paye").value;
-                                            // let total_commande = document.getElementById("total_commande").value - document.getElementById("remise").value;
+                                            let paye = document.getElementById("paye").value;
+                                            let total_commande = document.getElementById("total_commande").value - document.getElementById("remise").value;
 
                                             if (reponse === "somme_error") {
                                                 Swal.fire({
@@ -320,18 +320,24 @@ include('includes/header.php');
                                                 return;
                                             }
 
-                                            // if (paye < total_commande){
-                                            //     Swal.fire({
-                                            //         icon: 'success',
-                                            //         title: 'Succès',
-                                            //         text: 'La facture a été validée'
-                                            //     });
-                                            // }
-
+                                            if (paye < total_commande) {
+                                                const dette = total_commande - paye
+                                                Swal.fire({
+                                                    icon: 'success',
+                                                    title: 'Succès',
+                                                    text: `La facture a été validée avec une dette de ${dette} FCFA`
+                                                });
+                                            }
+                                            let validateText = "La facture a été validée"
+                                            if (paye < total_commande) {
+                                                let dette = total_commande - paye
+                                                validateText += ` avec une dette de ${dette} FCFA`
+                                                console.log(dette)
+                                            }
                                             Swal.fire({
                                                 icon: 'success',
                                                 title: 'Succès',
-                                                text: 'La facture a été validée'
+                                                text: validateText
                                             });
 
                                             // Affichage des boutons stylisés et centrés après validation
