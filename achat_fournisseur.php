@@ -223,10 +223,21 @@ checkAdmin();
                                                 return;
                                             }
                                             {
+                                                let paye = document.getElementById("paye").value;
+                                                let total_commande = document.getElementById("total_commande").value - document.getElementById("remise").value;
+
+                                                if (paye < total_commande) {
+                                                    const dette = total_commande - paye
+                                                    Swal.fire({
+                                                        icon: 'success',
+                                                        title: 'Succès',
+                                                        text: `La facture a été validée avec une dette de ${dette} FCFA`
+                                                    });
+                                                }
                                                 Swal.fire({
                                                     icon: 'success',
-                                                    title: 'Success',
-                                                    text: 'La facture a été validée'
+                                                    title: 'Succès',
+                                                    text: `La facture a été validée`
                                                 });
                                                 // Affichage des boutons stylisés et centrés après validation
                                                 document.getElementById("editer").innerHTML = "<div class='text-center'><input type='button' class='btn btn-facture mx-auto' value='Voir la facture' onclick='window.open(\"ticket.php?id=" + reponse + "\")' /></div>";

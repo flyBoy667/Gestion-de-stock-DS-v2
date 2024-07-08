@@ -17,7 +17,7 @@ if (isset($_POST["param"])) {
             $requete = "SELECT * FROM produit WHERE id_produit = '" . $_POST["ref_produit"] . "';";
             $retours = mysqli_query($liaison, $requete);
             $retour = mysqli_fetch_array($retours);
-            $chaine = $retour["nom_produit"] . "|" . $retour["prix_vente"] . "|" . $retour["stock_encours"];
+            $chaine = $retour["nom_produit"] . "|" . $retour["prix_achat"] . "|" . $retour["stock_encours"];
             print($chaine);
             break;
 

@@ -123,6 +123,7 @@ include('includes/header.php');
                 <?php endforeach; ?>
             </select>
             <noscript><input type="submit" value="Appliquer" class="btn btn-primary"></noscript>
+            <a href="export_excel.php?year=<?php echo $selectedYear; ?>&month=<?php echo $selectedMonth; ?>" class="btn btn-primary">Exporter vers Excel</a>
         </form>
     </div>
 

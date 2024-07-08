@@ -328,16 +328,22 @@ include('includes/header.php');
                                                     text: `La facture a été validée avec une dette de ${dette} FCFA`
                                                 });
                                             }
-                                            let validateText = "La facture a été validée"
-                                            if (paye < total_commande) {
-                                                let dette = total_commande - paye
-                                                validateText += ` avec une dette de ${dette} FCFA`
-                                                console.log(dette)
-                                            }
+                                            // let validateText = "La facture a été validée"
+                                            // if (paye < total_commande) {
+                                            //     let dette = total_commande - paye
+                                            //     validateText += ` avec une dette de ${dette} FCFA`
+                                            //     console.log(dette)
+                                            // }
+                                            // Swal.fire({
+                                            //     icon: 'success',
+                                            //     title: 'Succès',
+                                            //     text: validateText
+                                            // });
+
                                             Swal.fire({
                                                 icon: 'success',
                                                 title: 'Succès',
-                                                text: validateText
+                                                text: `La facture a été validée`
                                             });
 
                                             // Affichage des boutons stylisés et centrés après validation
@@ -473,7 +479,7 @@ include('includes/header.php');
 
                     <input type="hidden" id="Adresse" name="Adresse">
                     <input type="hidden" id="Tel" name="Tel">
-                    <input type="hidden" id="qr" name="qr">
+                    <input type="text" id="qr" name="qr">
                     <input type="button" id="qr_btn" name="qr_btn" value="Scanner code barre"
                            class="btn btn-primary">
 
@@ -516,14 +522,19 @@ include('includes/header.php');
         * id_produit devient la valeur du code barre
         * un fichier pour la generation de code barre pour tous les produits
         * */
-        // document.getElementById("qr").addEventListener('input', (e) => {
-        //     document.getElementById("ref_produit").value = e.currentTarget.value;
-        //     document.getElementById("param").value = "recup_article";
-        //     recolter();
-        // })
-        // document.getElementById("qr_btn").addEventListener('click', (e) => {
-        //     document.getElementById("qr").focus();
-        // })
+        document.getElementById("qr_btn").addEventListener("click", (e) => {
+            document.getElementById("qr").value = ""
+            document.getElementById("qr").focus();
+        })
+        document.getElementById("qr").addEventListener('input', (e) => {
+            document.getElementById("ref_produit").value = e.currentTarget.value;
+            document.getElementById("param").value = "recup_article";
+            recolter();
+            document.getElementById("qr").value = ""
+        })
+        document.getElementById("qr_btn").addEventListener('click', (e) => {
+            document.getElementById("qr").focus();
+        })
 
         function showAlert() {
             Swal.fire({
