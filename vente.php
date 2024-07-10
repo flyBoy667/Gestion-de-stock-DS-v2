@@ -517,6 +517,41 @@ include('includes/header.php');
     </div>
     <script language='javascript' type="text/javascript">
         var tot_com = 0;
+
+        function plus_com_barre_code() {
+            var ref_p = ref_produit.value;
+            qte_commande.value = 1
+            if (ref_client.value !== 0 && ref_p !== 0 && qte_commande.value !== "0" && qte_commande.value !== "") {
+                if (parseInt(qte_commande.value) > parseInt(qte.value)) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erreur',
+                        text: "La quantité en stock n'est pas suffisante pour honorer la commande"
+                    });
+                } else {
+                    // Utiliser les données du tableau articles
+                    if (articles[ref_p]) {
+                        article = articles[ref_p];
+                        var des_p = article[0];
+                        var pht_p = article[1];
+                        var qte_p = qte_commande.value;
+
+                        article[2] = article[2] - parseInt(qte_p);
+
+                        qte.value = article[2]
+
+                        tot_com = tot_com + qte_p * pht_p;
+                        total_commande.value = tot_com.toFixed(2);
+                        total_com.value = total_commande.value;
+                        chaine_com.value += "|" + ref_p + ";" + qte_p + ";" + des_p + ";" + pht_p;
+                        facture();
+                    } else {
+                        alert("Les informations du produit ne sont pas disponibles.");
+                    }
+                }
+            }
+        }
+
         /*
         * Generation du code barre
         * id_produit devient la valeur du code barre
@@ -526,10 +561,13 @@ include('includes/header.php');
             document.getElementById("qr").value = ""
             document.getElementById("qr").focus();
         })
-        document.getElementById("qr").addEventListener('input', (e) => {
+        document.getElementById("qr").addEventListener('input', async (e) => {
             document.getElementById("ref_produit").value = e.currentTarget.value;
             document.getElementById("param").value = "recup_article";
-            recolter();
+            await recolter();
+            setTimeout(() => {
+                plus_com_barre_code()
+            }, 1000)
             document.getElementById("qr").value = ""
         })
         document.getElementById("qr_btn").addEventListener('click', (e) => {
