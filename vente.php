@@ -479,8 +479,8 @@ include('includes/header.php');
 
                 <input type="hidden" id="Adresse" name="Adresse">
                 <input type="hidden" id="Tel" name="Tel">
-                <input type="text" id="qr" name="qr">
-                <input type="button" id="qr_btn" name="qr_btn" value="Scanner code barre"
+                <input type="text" id="qr" name="qr" style="position: absolute; left: -9999px;">
+                <input type="button" id="qr_btn" name="qr_btn" value="Cliquer ici pour scanner"
                        class="btn btn-primary">
 
                 <div class="row mt-4">
@@ -569,6 +569,15 @@ include('includes/header.php');
     document.getElementById("qr_btn").addEventListener("click", (e) => {
         document.getElementById("qr").value = ""
         document.getElementById("qr").focus();
+        document.getElementById("qr_btn").value = "Scan en cours"
+        document.getElementById("qr_btn").classList.remove("btn-primary")
+        document.getElementById("qr_btn").classList.add("btn-info")
+    })
+    document.getElementById("qr").addEventListener('focusout', (e) => {
+        document.getElementById("qr_btn").value = "Cliquer ici pour scanner"
+        document.getElementById("qr_btn").classList.remove("btn-info")
+        document.getElementById("qr_btn").classList.add("btn-primary")
+
     })
     document.getElementById("qr").addEventListener('input', async (e) => {
         document.getElementById("ref_produit").value = e.currentTarget.value;
